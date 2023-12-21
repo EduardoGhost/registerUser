@@ -40,7 +40,8 @@ public class FirstFragment extends Fragment {
         binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               ///add função
+                Intent intent = new Intent(getActivity(), listClientActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">cadastro</string>
+    <string name="app_name">Cadastro de Clientes</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -14,4 +14,5 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_cadastro">Cadastro</string>
+    <string name="clients_list">Lista de Clientes</string>
 </resources>
