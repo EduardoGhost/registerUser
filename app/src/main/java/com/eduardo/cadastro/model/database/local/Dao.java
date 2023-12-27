@@ -1,4 +1,4 @@
-package com.eduardo.cadastro.model.database;
+package com.eduardo.cadastro.model.database.local;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -29,6 +29,7 @@ public class Dao implements Interface {
     public boolean cadastroCliente(ClienteEntity mCliente) {
         ContentValues values = new ContentValues();
         values.put("clienteNome", mCliente.getName());
+        values.put("clienteUserName", mCliente.getUserName());
 
         try {
             sqlWrite.insert(SQLite.TABELA_CLIENTE, null, values);

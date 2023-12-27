@@ -1,4 +1,4 @@
-package com.eduardo.cadastro.model.database;
+package com.eduardo.cadastro.model.database.local;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,7 +19,7 @@ public class SQLite extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         String sqlCliente = "create table if not exists " + TABELA_CLIENTE + "(cliCodigo integer primary key autoincrement," +
-                        "clienteNome text not null)";
+                        "clienteNome text not null, clienteUserName text not null)";
 
         try {
             db.execSQL(sqlCliente);

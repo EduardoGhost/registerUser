@@ -6,6 +6,7 @@ public class ClienteEntity implements Serializable {
 
     private Long id;
     private String name;
+    private String userName;
     private String password;
     private String date;
     private String sex;
@@ -17,9 +18,10 @@ public class ClienteEntity implements Serializable {
     public ClienteEntity() {
     }
 
-    public ClienteEntity(Long id, String name, String password, String date, String sex, String cpfOrCnpj, String email, String adress, String picture) {
+    public ClienteEntity(Long id, String name, String userName, String password, String date, String sex, String cpfOrCnpj, String email, String adress, String picture) {
         this.id = id;
         this.name = name;
+        this.userName = userName;
         this.password = password;
         this.date = date;
         this.sex = sex;
@@ -101,12 +103,20 @@ public class ClienteEntity implements Serializable {
         this.picture = picture;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     @Override
     public String toString() {
         return "ModelCliente{" +
                 "codigo=" + id +
                 ", nome='" + name + '\'' +
+                ", userName='" + userName + '\'' +
                 ", senha='" + password + '\'' +
                 ", sexo='" + sex + '\'' +
                 ", cpfOuCnpj='" + cpfOrCnpj + '\'' +

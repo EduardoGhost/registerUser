@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 
 import com.eduardo.cadastro.R;
 import com.eduardo.cadastro.model.ClienteEntity;
-import com.eduardo.cadastro.model.database.Dao;
+import com.eduardo.cadastro.model.database.local.Dao;
 import com.eduardo.cadastro.view.adapter.Adapter;
 
 import java.util.ArrayList;

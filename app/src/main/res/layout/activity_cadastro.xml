@@ -7,11 +7,21 @@
     tools:context=".view.CadastroActivity">
 
     <EditText
-        android:id="@+id/editTextExample"
+        android:id="@+id/editTextName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Nome Completo"
         android:layout_margin="16dp"/>
+
+    <EditText
+        android:id="@+id/editTextUserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="Apelido"
+        app:layout_constraintBottom_toTopOf="@+id/idBtnCadastro"
+        app:layout_constraintTop_toBottomOf="@+id/editTextName"
+        tools:layout_editor_absoluteX="32dp" />
 
     <Button
         android:id="@+id/idBtnCadastro"
@@ -23,9 +33,9 @@
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextExample"
-        app:layout_constraintVertical_bias="0.026" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextName"
+        app:layout_constraintVertical_bias="0.203" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
