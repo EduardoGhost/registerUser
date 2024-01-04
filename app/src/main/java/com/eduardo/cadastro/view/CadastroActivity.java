@@ -1,7 +1,9 @@
 package com.eduardo.cadastro.view;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,10 +21,11 @@ public class CadastroActivity extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_cadastro);
-            inicializarComponentes();
+          //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            initializeComponents();
         }
 
-        public void inicializarComponentes() {
+        public void initializeComponents() {
             editTextName = findViewById(R.id.editTextName);
             editTextUserName = findViewById(R.id.editTextUserName);
             botaoAdicionarCliente = findViewById(R.id.idBtnCadastro);
@@ -32,14 +35,21 @@ public class CadastroActivity extends AppCompatActivity {
             Dao escreverCliente = new Dao(getBaseContext());
             ClienteEntity setCliente = new ClienteEntity();
 
-            setCliente.setName(obterTexto(editTextName));
-            setCliente.setUserName(obterTexto(editTextUserName));
+            setCliente.setName(getText(editTextName));
+            setCliente.setUserName(getText(editTextUserName));
 
             boolean resultado = escreverCliente.cadastroCliente(setCliente);
             System.out.println("Resultado: " + resultado + " Nome: " + setCliente.getName() + " UserName: " + setCliente.getUserName());
+            clearFields();
         }
 
-        private String obterTexto(EditText editText) {
+        private String getText(EditText editText) {
             return editText.getText().toString();
         }
+
+        public void clearFields(){
+            editTextName.setText("");
+            editTextUserName.setText("");
+        }
+
     }

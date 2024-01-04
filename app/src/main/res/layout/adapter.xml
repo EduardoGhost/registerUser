@@ -23,4 +23,20 @@
         android:textStyle="bold"
          />
 
+    <TextView
+        android:id="@+id/idTxtUpdate"
+        android:layout_width="100sp"
+        android:layout_height="40sp"
+        android:layout_weight="1"
+        android:drawableEnd="@drawable/ic_update_arrow"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/idTxtDelete"
+        android:layout_width="100sp"
+        android:layout_height="40sp"
+        android:layout_weight="1"
+        android:drawableEnd="@drawable/ic_delete"
+        android:gravity="center" />
+
 </LinearLayout>

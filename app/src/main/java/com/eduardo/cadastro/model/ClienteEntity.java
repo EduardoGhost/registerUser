@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class ClienteEntity implements Serializable {
 
-    private Long id;
+    private Long codeId;
     private String name;
     private String userName;
     private String password;
@@ -18,8 +18,8 @@ public class ClienteEntity implements Serializable {
     public ClienteEntity() {
     }
 
-    public ClienteEntity(Long id, String name, String userName, String password, String date, String sex, String cpfOrCnpj, String email, String adress, String picture) {
-        this.id = id;
+    public ClienteEntity(Long codeId, String name, String userName, String password, String date, String sex, String cpfOrCnpj, String email, String adress, String picture) {
+        this.codeId = codeId;
         this.name = name;
         this.userName = userName;
         this.password = password;
@@ -31,12 +31,12 @@ public class ClienteEntity implements Serializable {
         this.picture = picture;
     }
 
-    public Long getId() {
-        return id;
+    public Long getCodeId() {
+        return codeId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCodeId(Long codeId) {
+        this.codeId = codeId;
     }
 
     public String getName() {
@@ -114,7 +114,7 @@ public class ClienteEntity implements Serializable {
     @Override
     public String toString() {
         return "ModelCliente{" +
-                "codigo=" + id +
+                "codigo=" + codeId +
                 ", nome='" + name + '\'' +
                 ", userName='" + userName + '\'' +
                 ", senha='" + password + '\'' +

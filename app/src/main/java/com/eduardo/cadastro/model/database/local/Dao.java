@@ -33,7 +33,7 @@ public class Dao implements Interface {
 
         try {
             sqlWrite.insert(SQLite.TABELA_CLIENTE, null, values);
-            Log.i("Cliente ", SQLite.TABELA_CLIENTE + values);
+            Log.i("Cliente Dados", SQLite.TABELA_CLIENTE + values);
             showToast("Cliente cadastrado com sucesso!");
             return true;
         } catch (Exception e) {
@@ -45,18 +45,36 @@ public class Dao implements Interface {
 
     public List<ClienteEntity> listClientes() {
         List<ClienteEntity> listClientes = new ArrayList<>();
-        String sqlSelect = "select *from "+ SQLite.TABELA_CLIENTE+";";
+        String sqlSelect = "select * from " + SQLite.TABELA_CLIENTE + ";";
         Cursor cursor = sqlRead.rawQuery(sqlSelect, null);
 
         while (cursor.moveToNext()) {
             ClienteEntity cliente = new ClienteEntity();
-            String nome;
-            nome = cursor.getString(cursor.getColumnIndex("clienteNome"));
-            cliente.setName(nome);
-            listClientes.add(cliente);
+            Long codigo = cursor.getLong(cursor.getColumnIndexOrThrow("cliCodigo"));
 
+            String nome, userName;
+            nome = cursor.getString(cursor.getColumnIndex("clienteNome"));
+            userName = cursor.getString(cursor.getColumnIndex("clienteUserName"));
+
+            cliente.setCodeId(codigo);
+            cliente.setName(nome);
+            cliente.setUserName(userName);
+
+            listClientes.add(cliente);
         }
         return listClientes;
+    }
+
+    //deleta por id
+    public boolean Delete(ClienteEntity cliente) {
+        try {
+            String[] id = {cliente.getCodeId().toString()};
+            sqlWrite.delete(SQLite.TABELA_CLIENTE,"cliCodigo = ?", id);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private void showToast(String message) {
