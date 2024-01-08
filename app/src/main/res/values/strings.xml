@@ -15,4 +15,6 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_cadastro">Cadastro</string>
     <string name="clients_list">Lista de Clientes</string>
+    <string name="detailsClient">Detalhes do Cliente</string>
+    <string name="editClient">Edição do Cliente</string>
 </resources>

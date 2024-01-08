@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.eduardo.cadastro.view.EditClientActivity">
+    <item
+        android:id="@+id/action_update"
+        android:title="Atualizar"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_alteracao"
+        android:title="Alterar"
+        app:showAsAction="never" />
+</menu>

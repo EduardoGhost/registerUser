@@ -49,6 +49,16 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+        <activity
+            android:name="com.eduardo.cadastro.view.EditClientActivity"
+            android:label="@string/editClient"
+            android:parentActivityName=".view.listClientActivity" />
+
+        <activity
+            android:name="com.eduardo.cadastro.view.DetailsClientActivity"
+            android:label="@string/detailsClient"
+            android:parentActivityName=".view.listClientActivity" />
     </application>
 
 </manifest>

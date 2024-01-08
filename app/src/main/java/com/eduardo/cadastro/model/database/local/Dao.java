@@ -65,7 +65,6 @@ public class Dao implements Interface {
         return listClientes;
     }
 
-    //deleta por id
     public boolean Delete(ClienteEntity cliente) {
         try {
             String[] id = {cliente.getCodeId().toString()};
@@ -76,6 +75,23 @@ public class Dao implements Interface {
             return false;
         }
     }
+
+    //alterar dados do cliente
+    //@Override
+    public boolean alterarClient(ClienteEntity cliente) {
+        ContentValues values = new ContentValues();
+        values.put("clienteNome", cliente.getName());
+
+        try {
+            String[] id = {cliente.getCodeId().toString()};
+            sqlWrite.update(SQLite.TABELA_CLIENTE, values, "cliCodigo = ?", id);
+            return true;
+        }catch (Exception e){
+            Log.i("Informação: ","Erro ao atualizar dados: "+e.getMessage());
+            return false;
+        }
+    }
+
 
     private void showToast(String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
