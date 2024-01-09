@@ -1,5 +1,6 @@
 package com.eduardo.cadastro.model.database.local;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -43,6 +44,7 @@ public class Dao implements Interface {
         }
     }
 
+    @SuppressLint("Range")
     public List<ClienteEntity> listClientes() {
         List<ClienteEntity> listClientes = new ArrayList<>();
         String sqlSelect = "select * from " + SQLite.TABELA_CLIENTE + ";";
@@ -76,15 +78,16 @@ public class Dao implements Interface {
         }
     }
 
-    //alterar dados do cliente
-    //@Override
     public boolean alterarClient(ClienteEntity cliente) {
         ContentValues values = new ContentValues();
         values.put("clienteNome", cliente.getName());
+        values.put("clienteUserName", cliente.getUserName());
 
         try {
-            String[] id = {cliente.getCodeId().toString()};
+            String[] id = {String.valueOf(cliente.getCodeId())};
             sqlWrite.update(SQLite.TABELA_CLIENTE, values, "cliCodigo = ?", id);
+            sqlWrite.close();
+
             return true;
         }catch (Exception e){
             Log.i("Informação: ","Erro ao atualizar dados: "+e.getMessage());

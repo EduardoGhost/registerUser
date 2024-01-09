@@ -2,6 +2,8 @@ package com.eduardo.cadastro.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.eduardo.cadastro.R;
@@ -11,11 +13,13 @@ import com.eduardo.cadastro.model.database.local.Dao;
 public class EditClientActivity extends AppCompatActivity {
 
     private EditText editTextNome, editTextUserName;
+    private Button btnSave;
     private ClienteEntity detalhes = new ClienteEntity();
 
     public void initViews(){
         editTextNome = findViewById(R.id.idNome);
         editTextUserName = findViewById(R.id.idUserName);
+        btnSave = findViewById(R.id.idBtnSave);
     }
 
     @Override
@@ -37,8 +41,7 @@ public class EditClientActivity extends AppCompatActivity {
 
     }
 
-    //colocar em um botao
-    public void alterarCliente() {
+    public void alterarCliente(View view) {
         String setNewNameClient, setNewUserNameClient;
         setNewNameClient = editTextNome.getText().toString();
         setNewUserNameClient = editTextUserName.getText().toString();
@@ -46,24 +49,18 @@ public class EditClientActivity extends AppCompatActivity {
         Dao dadoAlterado = new Dao(getBaseContext());
         ClienteEntity setAlterar = new ClienteEntity();
 
+        setAlterar.setCodeId(detalhes.getCodeId());
         setAlterar.setName(setNewNameClient);
         setAlterar.setUserName(setNewUserNameClient);
 
         Boolean resultado = dadoAlterado.alterarClient(setAlterar);
-        System.out.println("Resultado Alterado: " + resultado + " NomeAltered: " + setAlterar.getName()
-                + " UserNameAltered: " + setAlterar.getUserName());
 
-        Toast.makeText(EditClientActivity.this, "Dados atualizado com sucesso!", Toast.LENGTH_LONG).show();
-        //clearFields();
-
+        if (resultado) {
+            Toast.makeText(EditClientActivity.this, "Dados atualizados com sucesso!", Toast.LENGTH_LONG).show();
+            finish();
+        } else {
+            Toast.makeText(EditClientActivity.this, "Erro ao atualizar dados!", Toast.LENGTH_LONG).show();
+        }
 
     }
-
-    //criar função, esta sendo usada tmb no Dao
-    public void clearFields(){
-        editTextNome.setText("");
-        editTextUserName.setText("");
-    }
-
-
 }
