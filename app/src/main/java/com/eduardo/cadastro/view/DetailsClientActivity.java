@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.eduardo.cadastro.R;
 import com.eduardo.cadastro.model.ClienteEntity;
 

@@ -2,6 +2,7 @@ package com.eduardo.cadastro.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,8 +12,7 @@ import com.eduardo.cadastro.model.database.local.Dao;
 
 public class CadastroActivity extends AppCompatActivity {
 
-        private EditText editTextName;
-        private EditText editTextUserName;
+        private EditText editTextName, editTextUserName, editTextPassword;
         private Button botaoAdicionarCliente;
 
         @Override
@@ -25,6 +25,7 @@ public class CadastroActivity extends AppCompatActivity {
         public void initializeComponents() {
             editTextName = findViewById(R.id.editTextName);
             editTextUserName = findViewById(R.id.editTextUserName);
+            editTextPassword = findViewById(R.id.editTextPassword);
             botaoAdicionarCliente = findViewById(R.id.idBtnCadastro);
         }
 
@@ -34,9 +35,11 @@ public class CadastroActivity extends AppCompatActivity {
 
             setCliente.setName(getText(editTextName));
             setCliente.setUserName(getText(editTextUserName));
+            setCliente.setPassword(getText(editTextPassword));
 
             boolean resultado = escreverCliente.cadastroCliente(setCliente);
-            System.out.println("Resultado: " + resultado + " Nome: " + setCliente.getName() + " UserName: " + setCliente.getUserName());
+            Log.i("Resultado: ",resultado + " Nome: " + setCliente.getName() + " UserName: "
+                    + setCliente.getUserName() + " Senha: " + setCliente.getPassword());
             clearFields();
         }
 
@@ -47,6 +50,7 @@ public class CadastroActivity extends AppCompatActivity {
         public void clearFields(){
             editTextName.setText("");
             editTextUserName.setText("");
+            editTextPassword.setText("");
         }
 
     }

@@ -4,15 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.widget.LinearLayout;
-
 import com.eduardo.cadastro.R;
 import com.eduardo.cadastro.model.ClienteEntity;
 import com.eduardo.cadastro.model.database.local.Dao;
 import com.eduardo.cadastro.view.adapter.Adapter;
-
 import java.util.ArrayList;
 import java.util.List;
 

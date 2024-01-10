@@ -12,13 +12,14 @@ import com.eduardo.cadastro.model.database.local.Dao;
 
 public class EditClientActivity extends AppCompatActivity {
 
-    private EditText editTextNome, editTextUserName;
+    private EditText editTextNome, editTextUserName, editTextPassword;
     private Button btnSave;
     private ClienteEntity detalhes = new ClienteEntity();
 
     public void initViews(){
         editTextNome = findViewById(R.id.idNome);
         editTextUserName = findViewById(R.id.idUserName);
+        editTextPassword = findViewById(R.id.idPassword);
         btnSave = findViewById(R.id.idBtnSave);
     }
 
@@ -34,6 +35,7 @@ public class EditClientActivity extends AppCompatActivity {
         if (detalhes != null) {
             editTextNome.setText(detalhes.getName());
             editTextUserName.setText(detalhes.getUserName());
+            editTextPassword.setText(detalhes.getPassword());
         }else{
             Toast.makeText(EditClientActivity.this,
                     "Vazio",Toast.LENGTH_LONG).show();
@@ -42,9 +44,10 @@ public class EditClientActivity extends AppCompatActivity {
     }
 
     public void alterarCliente(View view) {
-        String setNewNameClient, setNewUserNameClient;
+        String setNewNameClient, setNewUserNameClient, setNewPassword;
         setNewNameClient = editTextNome.getText().toString();
         setNewUserNameClient = editTextUserName.getText().toString();
+        setNewPassword = editTextPassword.getText().toString();
 
         Dao dadoAlterado = new Dao(getBaseContext());
         ClienteEntity setAlterar = new ClienteEntity();
@@ -52,8 +55,9 @@ public class EditClientActivity extends AppCompatActivity {
         setAlterar.setCodeId(detalhes.getCodeId());
         setAlterar.setName(setNewNameClient);
         setAlterar.setUserName(setNewUserNameClient);
+        setAlterar.setPassword(setNewPassword);
 
-        Boolean resultado = dadoAlterado.alterarClient(setAlterar);
+        Boolean resultado = dadoAlterado.alterarCliente(setAlterar);
 
         if (resultado) {
             Toast.makeText(EditClientActivity.this, "Dados atualizados com sucesso!", Toast.LENGTH_LONG).show();

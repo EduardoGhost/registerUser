@@ -31,6 +31,7 @@ public class Dao implements Interface {
         ContentValues values = new ContentValues();
         values.put("clienteNome", mCliente.getName());
         values.put("clienteUserName", mCliente.getUserName());
+        values.put("password", mCliente.getPassword());
 
         try {
             sqlWrite.insert(SQLite.TABELA_CLIENTE, null, values);
@@ -40,6 +41,37 @@ public class Dao implements Interface {
         } catch (Exception e) {
             e.printStackTrace();
             showToast("Erro ao cadastrar cliente.");
+            return false;
+        }
+    }
+
+    @Override
+    public boolean alterarCliente(ClienteEntity mCliente) {
+        ContentValues values = new ContentValues();
+        values.put("clienteNome", mCliente.getName());
+        values.put("clienteUserName", mCliente.getUserName());
+        values.put("password", mCliente.getPassword());
+
+        try {
+            String[] id = {String.valueOf(mCliente.getCodeId())};
+            sqlWrite.update(SQLite.TABELA_CLIENTE, values, "cliCodigo = ?", id);
+            sqlWrite.close();
+
+            return true;
+        }catch (Exception e){
+            Log.i("Informação: ","Erro ao atualizar dados: "+e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteCliente(ClienteEntity mCliente) {
+        try {
+            String[] id = {mCliente.getCodeId().toString()};
+            sqlWrite.delete(SQLite.TABELA_CLIENTE,"cliCodigo = ?", id);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
             return false;
         }
     }
@@ -54,47 +86,20 @@ public class Dao implements Interface {
             ClienteEntity cliente = new ClienteEntity();
             Long codigo = cursor.getLong(cursor.getColumnIndexOrThrow("cliCodigo"));
 
-            String nome, userName;
+            String nome, userName, password;
             nome = cursor.getString(cursor.getColumnIndex("clienteNome"));
             userName = cursor.getString(cursor.getColumnIndex("clienteUserName"));
+            password = cursor.getString(cursor.getColumnIndex("password"));
 
             cliente.setCodeId(codigo);
             cliente.setName(nome);
             cliente.setUserName(userName);
+            cliente.setPassword(password);
 
             listClientes.add(cliente);
         }
         return listClientes;
     }
-
-    public boolean Delete(ClienteEntity cliente) {
-        try {
-            String[] id = {cliente.getCodeId().toString()};
-            sqlWrite.delete(SQLite.TABELA_CLIENTE,"cliCodigo = ?", id);
-            return true;
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean alterarClient(ClienteEntity cliente) {
-        ContentValues values = new ContentValues();
-        values.put("clienteNome", cliente.getName());
-        values.put("clienteUserName", cliente.getUserName());
-
-        try {
-            String[] id = {String.valueOf(cliente.getCodeId())};
-            sqlWrite.update(SQLite.TABELA_CLIENTE, values, "cliCodigo = ?", id);
-            sqlWrite.close();
-
-            return true;
-        }catch (Exception e){
-            Log.i("Informação: ","Erro ao atualizar dados: "+e.getMessage());
-            return false;
-        }
-    }
-
 
     private void showToast(String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();

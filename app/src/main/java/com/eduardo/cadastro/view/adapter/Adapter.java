@@ -16,7 +16,6 @@ import com.eduardo.cadastro.model.ClienteEntity;
 import com.eduardo.cadastro.model.database.local.Dao;
 import com.eduardo.cadastro.view.DetailsClientActivity;
 import com.eduardo.cadastro.view.EditClientActivity;
-
 import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ClienteViewHolder> {
@@ -80,7 +79,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ClienteViewHolder> {
                         Toast.makeText(context, "Usuario Deletado", Toast.LENGTH_LONG).show();
                         ClienteEntity deleteCliente = listClientes.get(i);
                         deleteCliente.getCodeId();
-                        daoCliente.Delete(deleteCliente);
+                        daoCliente.deleteCliente(deleteCliente);
                         listClientes.remove(i);
                         notifyItemRemoved(i);
                         notifyItemRangeChanged(i, getItemCount());
