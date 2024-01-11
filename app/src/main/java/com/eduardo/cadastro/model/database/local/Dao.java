@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.widget.Toast;
 import com.eduardo.cadastro.model.ClienteEntity;
 import com.eduardo.cadastro.model.Interface;
@@ -26,18 +26,11 @@ public class Dao implements Interface {
         this.context = context;
     }
 
+    @Override
     public boolean cadastroCliente(ClienteEntity mCliente) {
-        if (!validateCliente(mCliente)) {
-            return false;
-        }
-
-        ContentValues values = createContentValues(mCliente);
-        return databaseOperation(values, null, null);
-    }
-
-    private boolean validateCliente(ClienteEntity mCliente) {
         String senha = mCliente.getPassword();
 
+        //verifica se o nome tem mais de 15 caracteres
         if (mCliente.getName().length() <= 15) {
             showToast("Nome deve ter mais de 15 caracteres.");
             return false;
@@ -47,24 +40,64 @@ public class Dao implements Interface {
             showToast("Username já está em uso. Escolha outro.");
             return false;
         }
+        if (isPasswordValid(senha)) {
+            ContentValues values = new ContentValues();
+            values.put("clienteNome", mCliente.getName());
+            values.put("clienteUserName", mCliente.getUserName());
+            values.put("password", senha);
 
-        if (!isPasswordValid(senha)) {
+            try {
+                sqlWrite.insert(SQLite.TABELA_CLIENTE, null, values);
+                Log.i("Cliente Dados", SQLite.TABELA_CLIENTE + values);
+                showToast("Cliente cadastrado com sucesso!");
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                showToast("Erro ao cadastrar cliente.");
+                return false;
+            }
+        } else {
             showToast("Senha inválida. Deve ter pelo menos 8 caracteres, um número e uma letra maiúscula.");
             return false;
         }
-
-        return true;
     }
 
     @Override
     public boolean alterarCliente(ClienteEntity mCliente) {
-        if (!validateCliente(mCliente)) {
+        String senha = mCliente.getPassword();
+
+        //verifica se o nome tem mais de 15 caracteres
+        if (mCliente.getName().length() <= 15) {
+            showToast("Nome deve ter mais de 15 caracteres.");
             return false;
         }
-        ContentValues values = createContentValues(mCliente);
-        String[] id = {String.valueOf(mCliente.getCodeId())};
 
-        return databaseOperation(values, "cliCodigo = ?", id);
+        if (checkIfUsernameExists(mCliente.getUserName())) {
+            showToast("Username já está em uso. Escolha outro.");
+            return false;
+        }
+        if (isPasswordValid(senha)) {
+
+        ContentValues values = new ContentValues();
+        values.put("clienteNome", mCliente.getName());
+        values.put("clienteUserName", mCliente.getUserName());
+        values.put("password", mCliente.getPassword());
+
+        try {
+            String[] id = {String.valueOf(mCliente.getCodeId())};
+            sqlWrite.update(SQLite.TABELA_CLIENTE, values, "cliCodigo = ?", id);
+            sqlWrite.close();
+
+            return true;
+        }catch (Exception e){
+            Log.i("Informação: ","Erro ao atualizar dados: "+e.getMessage());
+            return false;
+        }
+        }
+         else {
+                showToast("Senha inválida. Deve ter pelo menos 8 caracteres, um número e uma letra maiúscula.");
+                return false;
+    }
     }
 
     @Override
@@ -122,32 +155,4 @@ public class Dao implements Interface {
         return password.length() >= 8 && password.matches(".*\\d.*") && password.matches(".*[A-Z].*");
     }
 
-    //escreve dado no banco
-    private boolean databaseOperation(ContentValues values, String whereClause, String[] whereArgs) {
-        try {
-            sqlWrite.insertOrThrow(SQLite.TABELA_CLIENTE, null, values);
-            showToast("Cliente cadastrado com sucesso!");
-            return true;
-        } catch (SQLiteConstraintException e) {
-            showToast("Erro ao cadastrar cliente. Nome ou Username já em uso.");
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            showToast("Erro ao cadastrar cliente.");
-            return false;
-        }
-    }
-    /**
-     * Cria um objeto ContentValues preenchido com os valores do ClienteEntity para inserção no banco de dados.
-     *
-     * @param mCliente Objeto ClienteEntity contendo os dados a serem inseridos no banco de dados.
-     * @return Objeto ContentValues preenchido.
-     */
-    private ContentValues createContentValues(ClienteEntity mCliente) {
-        ContentValues values = new ContentValues();
-        values.put("clienteNome", mCliente.getName());
-        values.put("clienteUserName", mCliente.getUserName());
-        values.put("password", mCliente.getPassword());
-        return values;
-    }
 }
