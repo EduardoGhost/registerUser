@@ -38,9 +38,12 @@ public class CadastroActivity extends AppCompatActivity {
             setCliente.setPassword(getText(editTextPassword));
 
             boolean resultado = escreverCliente.cadastroCliente(setCliente);
-            Log.i("Resultado: ",resultado + " Nome: " + setCliente.getName() + " UserName: "
-                    + setCliente.getUserName() + " Senha: " + setCliente.getPassword());
-            clearFields();
+
+            if (resultado) {
+                Log.i("Resultado: ",resultado + " Nome: " + setCliente.getName() + " UserName: "
+                        + setCliente.getUserName() + " Senha: " + setCliente.getPassword());
+                clearFields();
+            }
         }
 
         private String getText(EditText editText) {
@@ -52,5 +55,4 @@ public class CadastroActivity extends AppCompatActivity {
             editTextUserName.setText("");
             editTextPassword.setText("");
         }
-
-    }
+}
