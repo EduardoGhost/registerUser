@@ -11,6 +11,7 @@ import com.eduardo.cadastro.model.ClienteEntity;
 import com.eduardo.cadastro.model.Interface;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class Dao implements Interface {
     //escrever e ler os dados
@@ -30,6 +31,9 @@ public class Dao implements Interface {
     public boolean cadastroCliente(ClienteEntity mCliente) {
         String senha = mCliente.getPassword();
 
+        //validador de email
+        if (isValidEmail(mCliente.getEmail())) {
+
         //verifica se o nome tem mais de 15 caracteres
         if (mCliente.getName().length() <= 15) {
             showToast("Nome deve ter mais de 15 caracteres.");
@@ -45,6 +49,8 @@ public class Dao implements Interface {
             values.put("clienteNome", mCliente.getName());
             values.put("clienteUserName", mCliente.getUserName());
             values.put("password", senha);
+            values.put("adress", mCliente.getAdress());
+            values.put("email", mCliente.getEmail());
 
             try {
                 sqlWrite.insert(SQLite.TABELA_CLIENTE, null, values);
@@ -60,11 +66,18 @@ public class Dao implements Interface {
             showToast("Senha inválida. Deve ter pelo menos 8 caracteres, um número e uma letra maiúscula.");
             return false;
         }
+        } else {
+            showToast("Email inválido. Insira um email válido.");
+            return false;
+        }
     }
 
     @Override
     public boolean alterarCliente(ClienteEntity mCliente) {
         String senha = mCliente.getPassword();
+
+        //validador de email
+        if (isValidEmail(mCliente.getEmail())) {
 
         //verifica se o nome tem mais de 15 caracteres
         if (mCliente.getName().length() <= 15) {
@@ -72,16 +85,14 @@ public class Dao implements Interface {
             return false;
         }
 
-        if (checkIfUsernameExists(mCliente.getUserName())) {
-            showToast("Username já está em uso. Escolha outro.");
-            return false;
-        }
         if (isPasswordValid(senha)) {
 
         ContentValues values = new ContentValues();
         values.put("clienteNome", mCliente.getName());
         values.put("clienteUserName", mCliente.getUserName());
         values.put("password", mCliente.getPassword());
+        values.put("adress", mCliente.getAdress());
+        values.put("email", mCliente.getEmail());
 
         try {
             String[] id = {String.valueOf(mCliente.getCodeId())};
@@ -97,6 +108,10 @@ public class Dao implements Interface {
          else {
                 showToast("Senha inválida. Deve ter pelo menos 8 caracteres, um número e uma letra maiúscula.");
                 return false;
+    }
+    } else {
+        showToast("Email inválido. Insira um email válido.");
+        return false;
     }
     }
 
@@ -122,15 +137,19 @@ public class Dao implements Interface {
             ClienteEntity cliente = new ClienteEntity();
             Long codigo = cursor.getLong(cursor.getColumnIndexOrThrow("cliCodigo"));
 
-            String nome, userName, password;
+            String nome, userName, password, adress, email;
             nome = cursor.getString(cursor.getColumnIndex("clienteNome"));
             userName = cursor.getString(cursor.getColumnIndex("clienteUserName"));
             password = cursor.getString(cursor.getColumnIndex("password"));
+            adress = cursor.getString(cursor.getColumnIndex("adress"));
+            email = cursor.getString(cursor.getColumnIndex("email"));
 
             cliente.setCodeId(codigo);
             cliente.setName(nome);
             cliente.setUserName(userName);
             cliente.setPassword(password);
+            cliente.setAdress(adress);
+            cliente.setEmail(email);
 
             listClientes.add(cliente);
         }
@@ -153,6 +172,12 @@ public class Dao implements Interface {
     //metodo para validar senha
     public boolean isPasswordValid(String password) {
         return password.length() >= 8 && password.matches(".*\\d.*") && password.matches(".*[A-Z].*");
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        return pattern.matcher(email).matches();
     }
 
 }

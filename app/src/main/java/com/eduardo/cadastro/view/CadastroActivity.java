@@ -12,7 +12,7 @@ import com.eduardo.cadastro.model.database.local.Dao;
 
 public class CadastroActivity extends AppCompatActivity {
 
-        private EditText editTextName, editTextUserName, editTextPassword;
+        private EditText editTextName, editTextUserName, editTextPassword, editAdress, editTextEmail;
         private Button botaoAdicionarCliente;
 
         @Override
@@ -26,6 +26,8 @@ public class CadastroActivity extends AppCompatActivity {
             editTextName = findViewById(R.id.editTextName);
             editTextUserName = findViewById(R.id.editTextUserName);
             editTextPassword = findViewById(R.id.editTextPassword);
+            editAdress = findViewById(R.id.editTextAdress);
+            editTextEmail = findViewById(R.id.editTextEmail);
             botaoAdicionarCliente = findViewById(R.id.idBtnCadastro);
         }
 
@@ -36,12 +38,16 @@ public class CadastroActivity extends AppCompatActivity {
             setCliente.setName(getText(editTextName));
             setCliente.setUserName(getText(editTextUserName));
             setCliente.setPassword(getText(editTextPassword));
+            setCliente.setAdress(getText(editAdress));
+            setCliente.setEmail(getText(editTextEmail));
 
             boolean resultado = escreverCliente.cadastroCliente(setCliente);
 
             if (resultado) {
                 Log.i("Resultado: ",resultado + " Nome: " + setCliente.getName() + " UserName: "
-                        + setCliente.getUserName() + " Senha: " + setCliente.getPassword());
+                        + setCliente.getUserName() + " Senha: " + setCliente.getPassword() + " Endereço: " + setCliente.getAdress()
+                + " Email: " + setCliente.getEmail()
+                );
                 clearFields();
             }
         }
@@ -54,5 +60,7 @@ public class CadastroActivity extends AppCompatActivity {
             editTextName.setText("");
             editTextUserName.setText("");
             editTextPassword.setText("");
+            editAdress.setText("");
+            editTextEmail.setText("");
         }
 }

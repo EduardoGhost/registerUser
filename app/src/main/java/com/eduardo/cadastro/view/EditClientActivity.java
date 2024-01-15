@@ -12,7 +12,7 @@ import com.eduardo.cadastro.model.database.local.Dao;
 
 public class EditClientActivity extends AppCompatActivity {
 
-    private EditText editTextNome, editTextUserName, editTextPassword;
+    private EditText editTextNome, editTextUserName, editTextPassword, editTextAdress, editTextEmail;
     private Button btnSave;
     private ClienteEntity detalhes = new ClienteEntity();
 
@@ -20,6 +20,8 @@ public class EditClientActivity extends AppCompatActivity {
         editTextNome = findViewById(R.id.idNome);
         editTextUserName = findViewById(R.id.idUserName);
         editTextPassword = findViewById(R.id.idPassword);
+        editTextAdress = findViewById(R.id.idAdress);
+        editTextEmail = findViewById(R.id.idEmail);
         btnSave = findViewById(R.id.idBtnSave);
     }
 
@@ -36,6 +38,8 @@ public class EditClientActivity extends AppCompatActivity {
             editTextNome.setText(detalhes.getName());
             editTextUserName.setText(detalhes.getUserName());
             editTextPassword.setText(detalhes.getPassword());
+            editTextAdress.setText(detalhes.getAdress());
+            editTextEmail.setText(detalhes.getEmail());
         }else{
             Toast.makeText(EditClientActivity.this,
                     "Vazio",Toast.LENGTH_LONG).show();
@@ -44,10 +48,12 @@ public class EditClientActivity extends AppCompatActivity {
     }
 
     public void alterarCliente(View view) {
-        String setNewNameClient, setNewUserNameClient, setNewPassword;
+        String setNewNameClient, setNewUserNameClient, setNewPassword, setNewAdress, setNewEmail;
         setNewNameClient = editTextNome.getText().toString();
         setNewUserNameClient = editTextUserName.getText().toString();
         setNewPassword = editTextPassword.getText().toString();
+        setNewAdress = editTextAdress.getText().toString();
+        setNewEmail = editTextEmail.getText().toString();
 
         Dao dadoAlterado = new Dao(getBaseContext());
         ClienteEntity setAlterar = new ClienteEntity();
@@ -56,6 +62,8 @@ public class EditClientActivity extends AppCompatActivity {
         setAlterar.setName(setNewNameClient);
         setAlterar.setUserName(setNewUserNameClient);
         setAlterar.setPassword(setNewPassword);
+        setAlterar.setAdress(setNewAdress);
+        setAlterar.setEmail(setNewEmail);
 
         Boolean resultado = dadoAlterado.alterarCliente(setAlterar);
 

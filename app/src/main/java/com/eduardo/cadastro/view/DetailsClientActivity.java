@@ -9,12 +9,14 @@ import com.eduardo.cadastro.model.ClienteEntity;
 
 public class DetailsClientActivity extends AppCompatActivity {
 
-    private TextView textNome, textUserName;
+    private TextView textNome, textUserName, textAdress, textEmail;
     private ClienteEntity detalhes = new ClienteEntity();
 
     public void initViews(){
         textNome = findViewById(R.id.txtNome);
         textUserName = findViewById(R.id.txtUserName);
+        textAdress = findViewById(R.id.txtAdress);
+        textEmail = findViewById(R.id.txtEmail);
     }
 
 
@@ -30,6 +32,8 @@ public class DetailsClientActivity extends AppCompatActivity {
         if (detalhes != null) {
            textNome.setText(detalhes.getName());
            textUserName.setText(detalhes.getUserName());
+           textAdress.setText(detalhes.getAdress());
+           textEmail.setText(detalhes.getEmail());
         }else{
             Toast.makeText(DetailsClientActivity.this,
                     "Vazio",Toast.LENGTH_LONG).show();
