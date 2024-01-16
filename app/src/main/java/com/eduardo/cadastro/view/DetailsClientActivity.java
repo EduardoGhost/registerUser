@@ -6,10 +6,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.eduardo.cadastro.R;
 import com.eduardo.cadastro.model.ClienteEntity;
+import com.eduardo.cadastro.utils.DateUtils;
 
 public class DetailsClientActivity extends AppCompatActivity {
 
-    private TextView textNome, textUserName, textAdress, textEmail;
+    private TextView textNome, textUserName, textAdress, textEmail, textDate;
     private ClienteEntity detalhes = new ClienteEntity();
 
     public void initViews(){
@@ -17,6 +18,7 @@ public class DetailsClientActivity extends AppCompatActivity {
         textUserName = findViewById(R.id.txtUserName);
         textAdress = findViewById(R.id.txtAdress);
         textEmail = findViewById(R.id.txtEmail);
+        textDate = findViewById(R.id.txtDate);
     }
 
 
@@ -34,6 +36,10 @@ public class DetailsClientActivity extends AppCompatActivity {
            textUserName.setText(detalhes.getUserName());
            textAdress.setText(detalhes.getAdress());
            textEmail.setText(detalhes.getEmail());
+
+           long timestamp = detalhes.getDate();
+           String formattedDate = DateUtils.formatDateFromTimestamp(timestamp);
+           textDate.setText(formattedDate);
         }else{
             Toast.makeText(DetailsClientActivity.this,
                     "Vazio",Toast.LENGTH_LONG).show();

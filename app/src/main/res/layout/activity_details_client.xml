@@ -116,5 +116,33 @@
         android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@+id/txtAdress" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:layout_weight="2"
+        android:gravity="center|start"
+        android:paddingStart="10sp"
+        android:paddingEnd="5sp"
+        android:layout_marginTop="4dp"
+        android:text="Data de Nascimento:"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
+
+    <TextView
+        android:id="@+id/txtDate"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:layout_marginTop="4dp"
+        android:layout_weight="2"
+        android:gravity="center|start"
+        android:paddingStart="150sp"
+        android:paddingEnd="5sp"
+        android:text="data de nascimento"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

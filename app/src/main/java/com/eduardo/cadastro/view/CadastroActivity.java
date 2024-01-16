@@ -1,5 +1,7 @@
 package com.eduardo.cadastro.view;
 
+import static com.eduardo.cadastro.utils.DateUtils.formatDateFromTimestamp;
+import static com.eduardo.cadastro.utils.DateUtils.getTimestampFromDateString;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +14,7 @@ import com.eduardo.cadastro.model.database.local.Dao;
 
 public class CadastroActivity extends AppCompatActivity {
 
-        private EditText editTextName, editTextUserName, editTextPassword, editAdress, editTextEmail;
+        private EditText editTextName, editTextUserName, editTextPassword, editAdress, editTextEmail,  editTextDate;
         private Button botaoAdicionarCliente;
 
         @Override
@@ -28,6 +30,7 @@ public class CadastroActivity extends AppCompatActivity {
             editTextPassword = findViewById(R.id.editTextPassword);
             editAdress = findViewById(R.id.editTextAdress);
             editTextEmail = findViewById(R.id.editTextEmail);
+            editTextDate = findViewById(R.id.editTextDate);
             botaoAdicionarCliente = findViewById(R.id.idBtnCadastro);
         }
 
@@ -41,12 +44,17 @@ public class CadastroActivity extends AppCompatActivity {
             setCliente.setAdress(getText(editAdress));
             setCliente.setEmail(getText(editTextEmail));
 
+            String dateText = getText(editTextDate);
+            long selectedDate = getTimestampFromDateString(dateText);
+            setCliente.setDate(selectedDate);
+
             boolean resultado = escreverCliente.cadastroCliente(setCliente);
 
+            String formattedDate = formatDateFromTimestamp(setCliente.getDate());
             if (resultado) {
                 Log.i("Resultado: ",resultado + " Nome: " + setCliente.getName() + " UserName: "
                         + setCliente.getUserName() + " Senha: " + setCliente.getPassword() + " Endereço: " + setCliente.getAdress()
-                + " Email: " + setCliente.getEmail()
+                + " Email: " + setCliente.getEmail() + " Data de Nascimento: " + formattedDate
                 );
                 clearFields();
             }
@@ -62,5 +70,6 @@ public class CadastroActivity extends AppCompatActivity {
             editTextPassword.setText("");
             editAdress.setText("");
             editTextEmail.setText("");
+            editTextDate.setText("");
         }
 }

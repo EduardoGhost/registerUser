@@ -1,6 +1,7 @@
 package com.eduardo.cadastro.model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 public class ClienteEntity implements Serializable {
 
@@ -8,7 +9,7 @@ public class ClienteEntity implements Serializable {
     private String name;
     private String userName;
     private String password;
-    private String date;
+    private Long date;
     private String sex;
     private String cpfOrCnpj;
     private String email;
@@ -18,7 +19,7 @@ public class ClienteEntity implements Serializable {
     public ClienteEntity() {
     }
 
-    public ClienteEntity(Long codeId, String name, String userName, String password, String date, String sex, String cpfOrCnpj, String email, String adress, String picture) {
+    public ClienteEntity(Long codeId, String name, String userName, String password, Long date, String sex, String cpfOrCnpj, String email, String adress, String picture) {
         this.codeId = codeId;
         this.name = name;
         this.userName = userName;
@@ -55,11 +56,11 @@ public class ClienteEntity implements Serializable {
         this.password = password;
     }
 
-    public String getDate() {
+    public Long getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Long date) {
         this.date = date;
     }
 
@@ -109,6 +110,26 @@ public class ClienteEntity implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+
+    public int calculateAge() {
+        if (date != null) {
+            Calendar dob = Calendar.getInstance();
+            dob.setTimeInMillis(date);
+
+            Calendar today = Calendar.getInstance();
+
+            int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+            if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+                age--;
+            }
+
+            return age;
+        }
+
+        return 0; // Se a data de nascimento não estiver definida, retorna 0.
     }
 
     @Override

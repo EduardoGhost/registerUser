@@ -63,6 +63,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <com.vicmikhailau.maskededittext.MaskedEditText
+            android:id="@+id/editTextDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="Data de Nascimento (dd/MM/yyyy)"
+            android:textSize="14sp"
+            android:ems="10"
+            app:mask="##/##/####"
+            android:inputType="date"
+            app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
+            />
+
     <Button
         android:id="@+id/idBtnCadastro"
         android:layout_width="339dp"
@@ -72,7 +85,7 @@
         android:onClick="cadastroCliente"
         android:text="@string/cadastrar_cliente"
         android:textColor="@android:color/black"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDate"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

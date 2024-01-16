@@ -40,10 +40,19 @@ public class Dao implements Interface {
             return false;
         }
 
+        //vertifica se userName já existe
         if (checkIfUsernameExists(mCliente.getUserName())) {
             showToast("Username já está em uso. Escolha outro.");
             return false;
         }
+
+        //verifica se é maior do que 18 anos
+        int idade = mCliente.calculateAge();
+        if (idade < 18) {
+            showToast("É necessário ter mais de 18 anos para se cadastrar.");
+            return false;
+            }
+
         if (isPasswordValid(senha)) {
             ContentValues values = new ContentValues();
             values.put("clienteNome", mCliente.getName());
@@ -51,6 +60,7 @@ public class Dao implements Interface {
             values.put("password", senha);
             values.put("adress", mCliente.getAdress());
             values.put("email", mCliente.getEmail());
+            values.put("date", mCliente.getDate());
 
             try {
                 sqlWrite.insert(SQLite.TABELA_CLIENTE, null, values);
@@ -93,6 +103,7 @@ public class Dao implements Interface {
         values.put("password", mCliente.getPassword());
         values.put("adress", mCliente.getAdress());
         values.put("email", mCliente.getEmail());
+        values.put("date", mCliente.getDate());
 
         try {
             String[] id = {String.valueOf(mCliente.getCodeId())};
@@ -137,12 +148,13 @@ public class Dao implements Interface {
             ClienteEntity cliente = new ClienteEntity();
             Long codigo = cursor.getLong(cursor.getColumnIndexOrThrow("cliCodigo"));
 
-            String nome, userName, password, adress, email;
+            String nome, userName, password, adress, email, date;
             nome = cursor.getString(cursor.getColumnIndex("clienteNome"));
             userName = cursor.getString(cursor.getColumnIndex("clienteUserName"));
             password = cursor.getString(cursor.getColumnIndex("password"));
             adress = cursor.getString(cursor.getColumnIndex("adress"));
             email = cursor.getString(cursor.getColumnIndex("email"));
+            date = String.valueOf(cursor.getLong(cursor.getColumnIndex("date")));
 
             cliente.setCodeId(codigo);
             cliente.setName(nome);
@@ -150,6 +162,7 @@ public class Dao implements Interface {
             cliente.setPassword(password);
             cliente.setAdress(adress);
             cliente.setEmail(email);
+            cliente.setDate(Long.parseLong(date));
 
             listClientes.add(cliente);
         }
