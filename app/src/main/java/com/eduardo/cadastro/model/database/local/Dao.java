@@ -65,11 +65,9 @@ public class Dao implements Interface {
             try {
                 sqlWrite.insert(SQLite.TABELA_CLIENTE, null, values);
                 Log.i("Cliente Dados", SQLite.TABELA_CLIENTE + values);
-                showToast("Cliente cadastrado com sucesso!");
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
-                showToast("Erro ao cadastrar cliente.");
                 return false;
             }
         } else {
@@ -94,6 +92,12 @@ public class Dao implements Interface {
             showToast("Nome deve ter mais de 15 caracteres.");
             return false;
         }
+            //verifica se é maior do que 18 anos
+            int idade = mCliente.calculateAge();
+            if (idade < 18) {
+                showToast("É necessário ter mais de 18 anos para se cadastrar.");
+                return false;
+            }
 
         if (isPasswordValid(senha)) {
 
@@ -169,8 +173,26 @@ public class Dao implements Interface {
         return listClientes;
     }
 
-    private void showToast(String message) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    public ClienteEntity getClienteById(long clienteId) {
+        String sqlSelect = "SELECT * FROM " + SQLite.TABELA_CLIENTE + " WHERE cliCodigo = ?;";
+        String[] selectionArgs = {String.valueOf(clienteId)};
+
+        Cursor cursor = sqlRead.rawQuery(sqlSelect, selectionArgs);
+
+        ClienteEntity cliente = null;
+
+        if (cursor != null && cursor.moveToFirst()) {
+            cliente = new ClienteEntity();
+            cliente.setCodeId(cursor.getLong(cursor.getColumnIndexOrThrow("cliCodigo")));
+            cliente.setName(cursor.getString(cursor.getColumnIndex("clienteNome")));
+            cliente.setUserName(cursor.getString(cursor.getColumnIndex("clienteUserName")));
+            cliente.setPassword(cursor.getString(cursor.getColumnIndex("password")));
+            cliente.setAdress(cursor.getString(cursor.getColumnIndex("adress")));
+            cliente.setEmail(cursor.getString(cursor.getColumnIndex("email")));
+            cliente.setDate(cursor.getLong(cursor.getColumnIndex("date")));
+            cursor.close();
+        }
+        return cliente;
     }
 
     //metodo para checkar o userName existente
@@ -187,10 +209,14 @@ public class Dao implements Interface {
         return password.length() >= 8 && password.matches(".*\\d.*") && password.matches(".*[A-Z].*");
     }
 
+    //metodo para validar email
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(emailRegex);
         return pattern.matcher(email).matches();
     }
 
+    private void showToast(String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
 }

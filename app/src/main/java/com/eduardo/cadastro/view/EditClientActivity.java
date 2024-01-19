@@ -1,6 +1,8 @@
 package com.eduardo.cadastro.view;
 
+import static com.eduardo.cadastro.utils.DateUtils.getTimestampFromDateString;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,11 +11,14 @@ import android.widget.Toast;
 import com.eduardo.cadastro.R;
 import com.eduardo.cadastro.model.ClienteEntity;
 import com.eduardo.cadastro.model.database.local.Dao;
+import com.eduardo.cadastro.utils.DateUtils;
+import com.eduardo.cadastro.viewmodel.EditViewModel;
 
 public class EditClientActivity extends AppCompatActivity {
 
-    private EditText editTextNome, editTextUserName, editTextPassword, editTextAdress, editTextEmail;
+    private EditText editTextNome, editTextUserName, editTextPassword, editTextAdress, editTextEmail, editTextDate;
     private Button btnSave;
+    private EditViewModel editViewModel;
     private ClienteEntity detalhes = new ClienteEntity();
 
     public void initViews(){
@@ -22,6 +27,7 @@ public class EditClientActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.idPassword);
         editTextAdress = findViewById(R.id.idAdress);
         editTextEmail = findViewById(R.id.idEmail);
+        editTextDate = findViewById(R.id.idDate);
         btnSave = findViewById(R.id.idBtnSave);
     }
 
@@ -30,6 +36,23 @@ public class EditClientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_client);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Inicialize o EditViewModel
+        editViewModel = new ViewModelProvider(this).get(EditViewModel.class);
+
+        // Observa o resultado da edição e mensagens de erro
+        editViewModel.getEditResult().observe(this, editResult -> {
+            if (editResult) {
+                showToast("Dados atualizados com sucesso!");
+                finish();
+            }
+        });
+
+        editViewModel.getErrorMessage().observe(this, errorMessage -> {
+            if (!errorMessage.isEmpty()) {
+                showToast(errorMessage);
+            }
+        });
 
         initViews();
         detalhes = (ClienteEntity) getIntent().getSerializableExtra("keyEdit");
@@ -40,6 +63,10 @@ public class EditClientActivity extends AppCompatActivity {
             editTextPassword.setText(detalhes.getPassword());
             editTextAdress.setText(detalhes.getAdress());
             editTextEmail.setText(detalhes.getEmail());
+            long timestamp = detalhes.getDate();
+            String formattedDate = DateUtils.formatDateFromTimestamp(timestamp);
+            editTextDate.setText(formattedDate);
+
         }else{
             Toast.makeText(EditClientActivity.this,
                     "Vazio",Toast.LENGTH_LONG).show();
@@ -48,14 +75,16 @@ public class EditClientActivity extends AppCompatActivity {
     }
 
     public void alterarCliente(View view) {
-        String setNewNameClient, setNewUserNameClient, setNewPassword, setNewAdress, setNewEmail;
+
+        String setNewNameClient, setNewUserNameClient, setNewPassword, setNewAdress, setNewEmail,  setNewDate;
         setNewNameClient = editTextNome.getText().toString();
         setNewUserNameClient = editTextUserName.getText().toString();
         setNewPassword = editTextPassword.getText().toString();
         setNewAdress = editTextAdress.getText().toString();
         setNewEmail = editTextEmail.getText().toString();
+        setNewDate = editTextDate.getText().toString();
 
-        Dao dadoAlterado = new Dao(getBaseContext());
+        Dao dao = new Dao(getBaseContext());
         ClienteEntity setAlterar = new ClienteEntity();
 
         setAlterar.setCodeId(detalhes.getCodeId());
@@ -64,8 +93,12 @@ public class EditClientActivity extends AppCompatActivity {
         setAlterar.setPassword(setNewPassword);
         setAlterar.setAdress(setNewAdress);
         setAlterar.setEmail(setNewEmail);
+        setAlterar.setDate(getTimestampFromDateString(setNewDate));
 
-        Boolean resultado = dadoAlterado.alterarCliente(setAlterar);
+        editViewModel.alterarCliente(new Dao(getBaseContext()), setAlterar);
+
+
+        Boolean resultado = dao.alterarCliente(setAlterar);
 
         if (resultado) {
             Toast.makeText(EditClientActivity.this, "Dados atualizados com sucesso!", Toast.LENGTH_LONG).show();
@@ -74,5 +107,9 @@ public class EditClientActivity extends AppCompatActivity {
             Toast.makeText(EditClientActivity.this, "Erro ao atualizar dados!", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

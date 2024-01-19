@@ -6,29 +6,30 @@ import androidx.lifecycle.ViewModel;
 import com.eduardo.cadastro.model.ClienteEntity;
 import com.eduardo.cadastro.model.database.local.Dao;
 
-public class CadastroViewModel extends ViewModel {
+public class EditViewModel  extends ViewModel {
 
-    private final MutableLiveData<Boolean> cadastroResult = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> editResult = new MutableLiveData<>();
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
-    public MutableLiveData<Boolean> getCadastroResult() {
-        return cadastroResult;
+    public MutableLiveData<Boolean> getEditResult() {
+        return editResult;
     }
 
     public MutableLiveData<String> getErrorMessage() {
         return errorMessage;
     }
 
-    public void cadastrarCliente(Dao dao, ClienteEntity cliente) {
+
+    public void alterarCliente(Dao dao, ClienteEntity cliente) {
         // Lógica de validação e cadastro
         if (isValidCliente(cliente)) {
-            boolean resultado = dao.cadastroCliente(cliente);
+            boolean resultado = dao.alterarCliente(cliente);
 
             if (resultado) {
-                cadastroResult.setValue(true);
+                editResult.setValue(true);
 
             } else {
-                errorMessage.setValue("Erro ao cadastrar cliente.");
+                errorMessage.setValue("Erro ao atualizar cliente.");
             }
         } else {
             errorMessage.setValue("Dados do cliente inválidos.");
@@ -50,6 +51,5 @@ public class CadastroViewModel extends ViewModel {
 
         return true;
     }
+
 }
-
-
