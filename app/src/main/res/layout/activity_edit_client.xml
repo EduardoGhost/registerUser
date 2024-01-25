@@ -74,6 +74,17 @@
         app:layout_constraintTop_toBottomOf="@+id/idEmail"
         />
 
+    <EditText
+        android:id="@+id/idCpfOrCnpj"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="Selecione o Documento"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@+id/idDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <Button
         android:id="@+id/idBtnSave"
         android:layout_width="339dp"
@@ -83,7 +94,7 @@
         android:onClick="alterarCliente"
         android:text="@string/save"
         android:textColor="@android:color/black"
-        app:layout_constraintTop_toBottomOf="@+id/idDate"
+        app:layout_constraintTop_toBottomOf="@+id/idCpfOrCnpj"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

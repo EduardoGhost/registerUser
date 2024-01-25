@@ -61,6 +61,7 @@ public class Dao implements Interface {
             values.put("adress", mCliente.getAdress());
             values.put("email", mCliente.getEmail());
             values.put("date", mCliente.getDate());
+            values.put("cpfOrCnpj", mCliente.getCpfOrCnpj());
 
             try {
                 sqlWrite.insert(SQLite.TABELA_CLIENTE, null, values);
@@ -108,8 +109,9 @@ public class Dao implements Interface {
         values.put("adress", mCliente.getAdress());
         values.put("email", mCliente.getEmail());
         values.put("date", mCliente.getDate());
+        values.put("cpfOrCnpj", mCliente.getCpfOrCnpj());
 
-        try {
+            try {
             String[] id = {String.valueOf(mCliente.getCodeId())};
             sqlWrite.update(SQLite.TABELA_CLIENTE, values, "cliCodigo = ?", id);
             sqlWrite.close();
@@ -152,13 +154,14 @@ public class Dao implements Interface {
             ClienteEntity cliente = new ClienteEntity();
             Long codigo = cursor.getLong(cursor.getColumnIndexOrThrow("cliCodigo"));
 
-            String nome, userName, password, adress, email, date;
+            String nome, userName, password, adress, email, date, cpfOrCnpj;
             nome = cursor.getString(cursor.getColumnIndex("clienteNome"));
             userName = cursor.getString(cursor.getColumnIndex("clienteUserName"));
             password = cursor.getString(cursor.getColumnIndex("password"));
             adress = cursor.getString(cursor.getColumnIndex("adress"));
             email = cursor.getString(cursor.getColumnIndex("email"));
             date = String.valueOf(cursor.getLong(cursor.getColumnIndex("date")));
+            cpfOrCnpj = cursor.getString(cursor.getColumnIndex("cpfOrCnpj"));
 
             cliente.setCodeId(codigo);
             cliente.setName(nome);
@@ -167,12 +170,14 @@ public class Dao implements Interface {
             cliente.setAdress(adress);
             cliente.setEmail(email);
             cliente.setDate(Long.parseLong(date));
+            cliente.setCpfOrCnpj(cpfOrCnpj);
 
             listClientes.add(cliente);
         }
         return listClientes;
     }
 
+    @SuppressLint("Range")
     public ClienteEntity getClienteById(long clienteId) {
         String sqlSelect = "SELECT * FROM " + SQLite.TABELA_CLIENTE + " WHERE cliCodigo = ?;";
         String[] selectionArgs = {String.valueOf(clienteId)};
@@ -190,6 +195,7 @@ public class Dao implements Interface {
             cliente.setAdress(cursor.getString(cursor.getColumnIndex("adress")));
             cliente.setEmail(cursor.getString(cursor.getColumnIndex("email")));
             cliente.setDate(cursor.getLong(cursor.getColumnIndex("date")));
+            cliente.setEmail(cursor.getString(cursor.getColumnIndex("cpfOrCnpj")));
             cursor.close();
         }
         return cliente;

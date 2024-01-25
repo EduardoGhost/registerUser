@@ -13,14 +13,23 @@ import com.eduardo.cadastro.R;
 import com.eduardo.cadastro.model.ClienteEntity;
 import com.eduardo.cadastro.model.database.local.Dao;
 import com.eduardo.cadastro.viewmodel.CadastroViewModel;
+import com.vicmikhailau.maskededittext.MaskedFormatter;
+import com.vicmikhailau.maskededittext.MaskedWatcher;
+
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 public class CadastroActivity extends AppCompatActivity {
 
         private CadastroViewModel cadastroViewModel;
 
-        private EditText editTextName, editTextUserName, editTextPassword, editAdress, editTextEmail,  editTextDate;
+        private EditText editTextName, editTextUserName, editTextPassword, editAdress, editTextEmail,  editTextDate, editTextCpfOrCnpj;
         private Button botaoAdicionarCliente;
+        private RadioGroup radioGroup;
+        private RadioButton radioCPF;
+        private RadioButton radioCNPJ;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +54,20 @@ public class CadastroActivity extends AppCompatActivity {
                 }
             });
 
+            editTextCpfOrCnpj = findViewById(R.id.editTextCpfOrCnpj);
+
+            radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+                if (checkedId == R.id.radioCPF) {
+                    // CPF foi selecionado
+                    editTextCpfOrCnpj.setHint("CPF");
+                    setMaskCpf(); // Se necessário, aplique a máscara de CPF
+                } else if (checkedId == R.id.radioCNPJ) {
+                    // CNPJ foi selecionado
+                    editTextCpfOrCnpj.setHint("CNPJ");
+                    setMaskCnpj(); // Se necessário, aplique a máscara de CNPJ
+                }
+            });
+
         }
 
         public void initializeComponents() {
@@ -55,11 +78,36 @@ public class CadastroActivity extends AppCompatActivity {
             editTextEmail = findViewById(R.id.editTextEmail);
             editTextDate = findViewById(R.id.editTextDate);
             botaoAdicionarCliente = findViewById(R.id.idBtnCadastro);
+
+            radioGroup = findViewById(R.id.radioGroup);
+            radioCPF = findViewById(R.id.radioCPF);
+            radioCNPJ = findViewById(R.id.radioCNPJ);
+            editTextCpfOrCnpj = findViewById(R.id.editTextCpfOrCnpj);
+
+            // Configurar o RadioGroup para inicialmente desmarcar todos os RadioButtons
+            radioGroup.clearCheck();
+
+            // Configurar o ouvinte de alteração no RadioGroup
+            radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+                if (checkedId == R.id.radioCPF) {
+                    // CPF foi selecionado
+                    editTextCpfOrCnpj.setHint("CPF");
+                    setMaskCpf(); // Se necessário, aplique a máscara de CPF
+                } else if (checkedId == R.id.radioCNPJ) {
+                    // CNPJ foi selecionado
+                    editTextCpfOrCnpj.setHint("CNPJ");
+                    setMaskCnpj(); // Se necessário, aplique a máscara de CNPJ
+                }
+            });
         }
 
     public void cadastroCliente(View view) {
         Dao dao = new Dao(getBaseContext());
         ClienteEntity setCliente = new ClienteEntity();
+
+        // Obtém o CPF digitado e aplica a desmascaração
+        String cpfOrCnpj = editTextCpfOrCnpj.getText().toString();
+        String cpfUnmasked = unmask(cpfOrCnpj);
 
         setCliente.setName(getText(editTextName));
         setCliente.setUserName(getText(editTextUserName));
@@ -67,16 +115,15 @@ public class CadastroActivity extends AppCompatActivity {
         setCliente.setAdress(getText(editAdress));
         setCliente.setEmail(getText(editTextEmail));
         setCliente.setDate(getTimestampFromDateString(getText(editTextDate)));
+        setCliente.setCpfOrCnpj(cpfUnmasked);
 
         // Chame o método da ViewModel para cadastrar o cliente
         cadastroViewModel.cadastrarCliente(dao, setCliente);
 
-        //Log de dados
         String formattedDate = formatDateFromTimestamp(setCliente.getDate());
-
             Log.i("Resultado: ",  " Nome: " + setCliente.getName() + " UserName: "
                     + setCliente.getUserName() + " Senha: " + setCliente.getPassword() + " Endereço: " + setCliente.getAdress()
-                    + " Email: " + setCliente.getEmail() + " Data de Nascimento: " + formattedDate);
+                    + " Email: " + setCliente.getEmail() + " Data de Nascimento: " + formattedDate + " Documento: " + setCliente.getCpfOrCnpj());
     }
 
     private void showToast(String message) {
@@ -94,5 +141,23 @@ public class CadastroActivity extends AppCompatActivity {
             editAdress.setText("");
             editTextEmail.setText("");
             editTextDate.setText("");
+            editTextCpfOrCnpj.setText("");
         }
+
+    // Método para definir a máscara do CPF
+    private void setMaskCpf() {
+        MaskedFormatter formatter = new MaskedFormatter("###.###.###-##");
+        editTextCpfOrCnpj.addTextChangedListener(new MaskedWatcher(formatter, editTextCpfOrCnpj));
+    }
+    // Método para remover a máscara do CPF (retorna apenas os números)
+    private String unmask(String cpf) {
+        return cpf.replaceAll("[^0-9]", "");
+    }
+
+    // Método para definir a máscara do CNPJ
+    private void setMaskCnpj() {
+        MaskedFormatter formatter = new MaskedFormatter("##.###.###/####-##");
+        editTextCpfOrCnpj.addTextChangedListener(new MaskedWatcher(formatter, editTextCpfOrCnpj));
+    }
+
 }

@@ -19,7 +19,7 @@ public class SQLite extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         String sqlCliente = "create table if not exists " + TABELA_CLIENTE + "(cliCodigo integer primary key autoincrement," +
-                        "clienteNome text not null, clienteUserName text not null, password text not null, adress text not null, email text not null, date Long not null)";
+                        "clienteNome text not null, clienteUserName text not null, password text not null, adress text not null, email text not null, date Long not null, cpfOrCnpj text not null)";
 
         try {
             db.execSQL(sqlCliente);

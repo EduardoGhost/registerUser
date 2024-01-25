@@ -9,11 +9,12 @@ import com.eduardo.cadastro.R;
 import com.eduardo.cadastro.model.ClienteEntity;
 import com.eduardo.cadastro.model.database.local.Dao;
 import com.eduardo.cadastro.utils.DateUtils;
+import com.eduardo.cadastro.utils.MaskUtils;
 import com.eduardo.cadastro.viewmodel.DetailViewModel;
 
 public class DetailsClientActivity extends AppCompatActivity {
 
-    private TextView textNome, textUserName, textAdress, textEmail, textDate;
+    private TextView textNome, textUserName, textAdress, textEmail, textDate, textCpfOrCnpj;
     private DetailViewModel detailViewModel;
     private ClienteEntity detalhes = new ClienteEntity();
 
@@ -23,6 +24,7 @@ public class DetailsClientActivity extends AppCompatActivity {
         textAdress = findViewById(R.id.txtAdress);
         textEmail = findViewById(R.id.txtEmail);
         textDate = findViewById(R.id.txtDate);
+        textCpfOrCnpj = findViewById(R.id.txtCpfOrCnpj);
     }
 
     @Override
@@ -71,5 +73,13 @@ public class DetailsClientActivity extends AppCompatActivity {
         long timestamp = detalhes.getDate();
         String formattedDate = DateUtils.formatDateFromTimestamp(timestamp);
         textDate.setText(formattedDate);
+
+        String cpfOrCnpj = detalhes.getCpfOrCnpj();
+        if (MaskUtils.isCpf(cpfOrCnpj)) {
+            textCpfOrCnpj.setText(MaskUtils.formatCpf(cpfOrCnpj));
+        } else {
+            textCpfOrCnpj.setText(MaskUtils.formatCnpj(cpfOrCnpj));
+        }
+
     }
 }

@@ -16,7 +16,7 @@ import com.eduardo.cadastro.viewmodel.EditViewModel;
 
 public class EditClientActivity extends AppCompatActivity {
 
-    private EditText editTextNome, editTextUserName, editTextPassword, editTextAdress, editTextEmail, editTextDate;
+    private EditText editTextNome, editTextUserName, editTextPassword, editTextAdress, editTextEmail, editTextDate, editTextCpfOrCnpj;
     private Button btnSave;
     private EditViewModel editViewModel;
     private ClienteEntity detalhes = new ClienteEntity();
@@ -28,6 +28,7 @@ public class EditClientActivity extends AppCompatActivity {
         editTextAdress = findViewById(R.id.idAdress);
         editTextEmail = findViewById(R.id.idEmail);
         editTextDate = findViewById(R.id.idDate);
+        editTextCpfOrCnpj = findViewById(R.id.idCpfOrCnpj);
         btnSave = findViewById(R.id.idBtnSave);
     }
 
@@ -66,6 +67,7 @@ public class EditClientActivity extends AppCompatActivity {
             long timestamp = detalhes.getDate();
             String formattedDate = DateUtils.formatDateFromTimestamp(timestamp);
             editTextDate.setText(formattedDate);
+            editTextCpfOrCnpj.setText(detalhes.getCpfOrCnpj());
 
         }else{
             Toast.makeText(EditClientActivity.this,
@@ -76,13 +78,14 @@ public class EditClientActivity extends AppCompatActivity {
 
     public void alterarCliente(View view) {
 
-        String setNewNameClient, setNewUserNameClient, setNewPassword, setNewAdress, setNewEmail,  setNewDate;
+        String setNewNameClient, setNewUserNameClient, setNewPassword, setNewAdress, setNewEmail,  setNewDate, setNewCpfOrCnpj;
         setNewNameClient = editTextNome.getText().toString();
         setNewUserNameClient = editTextUserName.getText().toString();
         setNewPassword = editTextPassword.getText().toString();
         setNewAdress = editTextAdress.getText().toString();
         setNewEmail = editTextEmail.getText().toString();
         setNewDate = editTextDate.getText().toString();
+        setNewCpfOrCnpj = editTextCpfOrCnpj.getText().toString();
 
         Dao dao = new Dao(getBaseContext());
         ClienteEntity setAlterar = new ClienteEntity();
@@ -94,6 +97,7 @@ public class EditClientActivity extends AppCompatActivity {
         setAlterar.setAdress(setNewAdress);
         setAlterar.setEmail(setNewEmail);
         setAlterar.setDate(getTimestampFromDateString(setNewDate));
+        setAlterar.setCpfOrCnpj(setNewCpfOrCnpj);
 
         editViewModel.alterarCliente(new Dao(getBaseContext()), setAlterar);
 
