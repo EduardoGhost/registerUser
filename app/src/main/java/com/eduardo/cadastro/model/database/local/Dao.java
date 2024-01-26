@@ -62,6 +62,7 @@ public class Dao implements Interface {
             values.put("email", mCliente.getEmail());
             values.put("date", mCliente.getDate());
             values.put("cpfOrCnpj", mCliente.getCpfOrCnpj());
+            values.put("gender", mCliente.getGender());
 
             try {
                 sqlWrite.insert(SQLite.TABELA_CLIENTE, null, values);
@@ -110,6 +111,7 @@ public class Dao implements Interface {
         values.put("email", mCliente.getEmail());
         values.put("date", mCliente.getDate());
         values.put("cpfOrCnpj", mCliente.getCpfOrCnpj());
+        values.put("gender", mCliente.getGender());
 
             try {
             String[] id = {String.valueOf(mCliente.getCodeId())};
@@ -154,7 +156,7 @@ public class Dao implements Interface {
             ClienteEntity cliente = new ClienteEntity();
             Long codigo = cursor.getLong(cursor.getColumnIndexOrThrow("cliCodigo"));
 
-            String nome, userName, password, adress, email, date, cpfOrCnpj;
+            String nome, userName, password, adress, email, date, cpfOrCnpj, gender;
             nome = cursor.getString(cursor.getColumnIndex("clienteNome"));
             userName = cursor.getString(cursor.getColumnIndex("clienteUserName"));
             password = cursor.getString(cursor.getColumnIndex("password"));
@@ -162,6 +164,7 @@ public class Dao implements Interface {
             email = cursor.getString(cursor.getColumnIndex("email"));
             date = String.valueOf(cursor.getLong(cursor.getColumnIndex("date")));
             cpfOrCnpj = cursor.getString(cursor.getColumnIndex("cpfOrCnpj"));
+            gender = cursor.getString(cursor.getColumnIndex("gender"));
 
             cliente.setCodeId(codigo);
             cliente.setName(nome);
@@ -171,6 +174,7 @@ public class Dao implements Interface {
             cliente.setEmail(email);
             cliente.setDate(Long.parseLong(date));
             cliente.setCpfOrCnpj(cpfOrCnpj);
+            cliente.setGender(gender);
 
             listClientes.add(cliente);
         }

@@ -14,7 +14,7 @@ import com.eduardo.cadastro.viewmodel.DetailViewModel;
 
 public class DetailsClientActivity extends AppCompatActivity {
 
-    private TextView textNome, textUserName, textAdress, textEmail, textDate, textCpfOrCnpj;
+    private TextView textNome, textUserName, textAdress, textEmail, textDate, textCpfOrCnpj, textGender;
     private DetailViewModel detailViewModel;
     private ClienteEntity detalhes = new ClienteEntity();
 
@@ -25,6 +25,7 @@ public class DetailsClientActivity extends AppCompatActivity {
         textEmail = findViewById(R.id.txtEmail);
         textDate = findViewById(R.id.txtDate);
         textCpfOrCnpj = findViewById(R.id.txtCpfOrCnpj);
+        textGender = findViewById(R.id.txtGender);
     }
 
     @Override
@@ -80,6 +81,7 @@ public class DetailsClientActivity extends AppCompatActivity {
         } else {
             textCpfOrCnpj.setText(MaskUtils.formatCnpj(cpfOrCnpj));
         }
+        textGender.setText(detalhes.getGender());
 
     }
 }

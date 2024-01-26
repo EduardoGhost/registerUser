@@ -110,6 +110,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
+    <RadioGroup
+        android:id="@+id/radioGroupGender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/editTextCpfOrCnpj">
+
+        <RadioButton
+            android:id="@+id/radioMasculine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Masculino" />
+
+        <RadioButton
+            android:id="@+id/radioFeminine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Feminino" />
+
+        <RadioButton
+            android:id="@+id/radioOutro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Outro" />
+    </RadioGroup>
+
     <Button
         android:id="@+id/idBtnCadastro"
         android:layout_width="339dp"
@@ -119,7 +146,7 @@
         android:onClick="cadastroCliente"
         android:text="@string/cadastrar_cliente"
         android:textColor="@android:color/black"
-        app:layout_constraintTop_toBottomOf="@+id/editTextCpfOrCnpj"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupGender"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

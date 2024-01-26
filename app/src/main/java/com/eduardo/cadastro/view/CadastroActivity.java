@@ -15,21 +15,17 @@ import com.eduardo.cadastro.model.database.local.Dao;
 import com.eduardo.cadastro.viewmodel.CadastroViewModel;
 import com.vicmikhailau.maskededittext.MaskedFormatter;
 import com.vicmikhailau.maskededittext.MaskedWatcher;
-
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 public class CadastroActivity extends AppCompatActivity {
 
         private CadastroViewModel cadastroViewModel;
-
         private EditText editTextName, editTextUserName, editTextPassword, editAdress, editTextEmail,  editTextDate, editTextCpfOrCnpj;
         private Button botaoAdicionarCliente;
-        private RadioGroup radioGroup;
-        private RadioButton radioCPF;
-        private RadioButton radioCNPJ;
+        private RadioGroup radioGroup, radioGroupGender;
+        private RadioButton radioCPF, radioCNPJ, radioMasculino, radioFeminino;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +52,7 @@ public class CadastroActivity extends AppCompatActivity {
 
             editTextCpfOrCnpj = findViewById(R.id.editTextCpfOrCnpj);
 
+            //criar metodo separado para evitar a dublicação
             radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
                 if (checkedId == R.id.radioCPF) {
                     // CPF foi selecionado
@@ -77,8 +74,8 @@ public class CadastroActivity extends AppCompatActivity {
             editAdress = findViewById(R.id.editTextAdress);
             editTextEmail = findViewById(R.id.editTextEmail);
             editTextDate = findViewById(R.id.editTextDate);
+            radioGroupGender = findViewById(R.id.radioGroupGender);
             botaoAdicionarCliente = findViewById(R.id.idBtnCadastro);
-
             radioGroup = findViewById(R.id.radioGroup);
             radioCPF = findViewById(R.id.radioCPF);
             radioCNPJ = findViewById(R.id.radioCNPJ);
@@ -99,9 +96,15 @@ public class CadastroActivity extends AppCompatActivity {
                     setMaskCnpj(); // Se necessário, aplique a máscara de CNPJ
                 }
             });
+            radioGroupGender.clearCheck();
+            radioGroupGender = findViewById(R.id.radioGroupGender);
+            radioMasculino = findViewById(R.id.radioMasculine);
+            radioFeminino = findViewById(R.id.radioFeminine);
         }
 
     public void cadastroCliente(View view) {
+        String genderSelect = getGenderSelect();
+
         Dao dao = new Dao(getBaseContext());
         ClienteEntity setCliente = new ClienteEntity();
 
@@ -116,6 +119,7 @@ public class CadastroActivity extends AppCompatActivity {
         setCliente.setEmail(getText(editTextEmail));
         setCliente.setDate(getTimestampFromDateString(getText(editTextDate)));
         setCliente.setCpfOrCnpj(cpfUnmasked);
+        setCliente.setGender(genderSelect);
 
         // Chame o método da ViewModel para cadastrar o cliente
         cadastroViewModel.cadastrarCliente(dao, setCliente);
@@ -123,7 +127,8 @@ public class CadastroActivity extends AppCompatActivity {
         String formattedDate = formatDateFromTimestamp(setCliente.getDate());
             Log.i("Resultado: ",  " Nome: " + setCliente.getName() + " UserName: "
                     + setCliente.getUserName() + " Senha: " + setCliente.getPassword() + " Endereço: " + setCliente.getAdress()
-                    + " Email: " + setCliente.getEmail() + " Data de Nascimento: " + formattedDate + " Documento: " + setCliente.getCpfOrCnpj());
+                    + " Email: " + setCliente.getEmail() + " Data de Nascimento: " + formattedDate + " Documento: " + setCliente.getCpfOrCnpj()
+                    + " Genero: " + setCliente.getGender());
     }
 
     private void showToast(String message) {
@@ -160,4 +165,15 @@ public class CadastroActivity extends AppCompatActivity {
         editTextCpfOrCnpj.addTextChangedListener(new MaskedWatcher(formatter, editTextCpfOrCnpj));
     }
 
+    private String getGenderSelect() {
+        int radioButtonId = radioGroupGender.getCheckedRadioButtonId();
+        switch (radioButtonId) {
+            case R.id.radioMasculine:
+                return "Masculino";
+            case R.id.radioFeminine:
+                return "Feminino";
+            default:
+                return "Outro";
+        }
+        }
 }

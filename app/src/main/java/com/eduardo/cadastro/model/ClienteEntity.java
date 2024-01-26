@@ -10,7 +10,7 @@ public class ClienteEntity implements Serializable {
     private String userName;
     private String password;
     private Long date;
-    private String sex;
+    private String gender;
     private String cpfOrCnpj;
     private String email;
     private String adress;
@@ -19,13 +19,13 @@ public class ClienteEntity implements Serializable {
     public ClienteEntity() {
     }
 
-    public ClienteEntity(Long codeId, String name, String userName, String password, Long date, String sex, String cpfOrCnpj, String email, String adress, String picture) {
+    public ClienteEntity(Long codeId, String name, String userName, String password, Long date, String gender, String cpfOrCnpj, String email, String adress, String picture) {
         this.codeId = codeId;
         this.name = name;
         this.userName = userName;
         this.password = password;
         this.date = date;
-        this.sex = sex;
+        this.gender = gender;
         this.cpfOrCnpj = cpfOrCnpj;
         this.email = email;
         this.adress = adress;
@@ -64,12 +64,12 @@ public class ClienteEntity implements Serializable {
         this.date = date;
     }
 
-    public String getSex() {
-        return sex;
+    public String getGender() {
+        return gender;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getCpfOrCnpj() {
@@ -139,7 +139,7 @@ public class ClienteEntity implements Serializable {
                 ", nome='" + name + '\'' +
                 ", userName='" + userName + '\'' +
                 ", senha='" + password + '\'' +
-                ", sexo='" + sex + '\'' +
+                ", genêro='" + gender + '\'' +
                 ", cpfOuCnpj='" + cpfOrCnpj + '\'' +
                 ", email='" + email + '\'' +
                 ", endereço='" + adress + '\'' +
