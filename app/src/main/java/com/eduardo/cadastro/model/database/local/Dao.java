@@ -63,6 +63,7 @@ public class Dao implements Interface {
             values.put("date", mCliente.getDate());
             values.put("cpfOrCnpj", mCliente.getCpfOrCnpj());
             values.put("gender", mCliente.getGender());
+            values.put("picture", mCliente.getPicture());
 
             try {
                 sqlWrite.insert(SQLite.TABELA_CLIENTE, null, values);
@@ -112,6 +113,7 @@ public class Dao implements Interface {
         values.put("date", mCliente.getDate());
         values.put("cpfOrCnpj", mCliente.getCpfOrCnpj());
         values.put("gender", mCliente.getGender());
+        values.put("picture", mCliente.getPicture());
 
             try {
             String[] id = {String.valueOf(mCliente.getCodeId())};
@@ -156,7 +158,7 @@ public class Dao implements Interface {
             ClienteEntity cliente = new ClienteEntity();
             Long codigo = cursor.getLong(cursor.getColumnIndexOrThrow("cliCodigo"));
 
-            String nome, userName, password, adress, email, date, cpfOrCnpj, gender;
+            String nome, userName, password, adress, email, date, cpfOrCnpj, gender, picture;
             nome = cursor.getString(cursor.getColumnIndex("clienteNome"));
             userName = cursor.getString(cursor.getColumnIndex("clienteUserName"));
             password = cursor.getString(cursor.getColumnIndex("password"));
@@ -165,6 +167,7 @@ public class Dao implements Interface {
             date = String.valueOf(cursor.getLong(cursor.getColumnIndex("date")));
             cpfOrCnpj = cursor.getString(cursor.getColumnIndex("cpfOrCnpj"));
             gender = cursor.getString(cursor.getColumnIndex("gender"));
+            picture = cursor.getString(cursor.getColumnIndex("picture"));
 
             cliente.setCodeId(codigo);
             cliente.setName(nome);
@@ -175,6 +178,7 @@ public class Dao implements Interface {
             cliente.setDate(Long.parseLong(date));
             cliente.setCpfOrCnpj(cpfOrCnpj);
             cliente.setGender(gender);
+            cliente.setPicture(picture);
 
             listClientes.add(cliente);
         }
@@ -199,7 +203,8 @@ public class Dao implements Interface {
             cliente.setAdress(cursor.getString(cursor.getColumnIndex("adress")));
             cliente.setEmail(cursor.getString(cursor.getColumnIndex("email")));
             cliente.setDate(cursor.getLong(cursor.getColumnIndex("date")));
-            cliente.setEmail(cursor.getString(cursor.getColumnIndex("cpfOrCnpj")));
+            cliente.setCpfOrCnpj(cursor.getString(cursor.getColumnIndex("cpfOrCnpj")));
+            cliente.setPicture(cursor.getString(cursor.getColumnIndex("picture")));
             cursor.close();
         }
         return cliente;

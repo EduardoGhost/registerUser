@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".view.CadastroActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
     <EditText
         android:id="@+id/editTextName"
@@ -137,7 +141,35 @@
             android:text="Outro" />
     </RadioGroup>
 
-    <Button
+        <TextView
+            android:layout_width="120sp"
+            android:layout_height="40sp"
+            android:layout_weight="2"
+            android:layout_margin="16dp"
+            android:gravity="center|start"
+            android:paddingStart="10sp"
+            android:paddingEnd="5sp"
+            android:text="Foto de Perfil:"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroupGender" />
+
+        <ImageView
+            android:id="@+id/imageViewProfile"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="16dp"
+            android:scaleType="centerCrop"
+            android:src="@android:drawable/ic_menu_myplaces"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroupGender"
+            />
+
+        <Button
         android:id="@+id/idBtnCadastro"
         android:layout_width="339dp"
         android:layout_height="48dp"
@@ -150,4 +182,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    </ScrollView>

@@ -179,7 +179,6 @@
         android:gravity="center|start"
         android:paddingStart="10sp"
         android:paddingEnd="5sp"
-        android:layout_marginTop="4dp"
         android:text="Genêro:"
         android:textColor="@android:color/black"
         android:textSize="14sp"
@@ -190,7 +189,6 @@
         android:id="@+id/txtGender"
         android:layout_width="match_parent"
         android:layout_height="40sp"
-        android:layout_marginTop="4dp"
         android:layout_weight="2"
         android:gravity="center|start"
         android:paddingStart="150sp"
@@ -199,6 +197,34 @@
         android:textColor="@android:color/black"
         android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@+id/txtCpfOrCnpj" />
+
+
+    <TextView
+        android:layout_width="120sp"
+        android:layout_height="40sp"
+        android:layout_weight="2"
+        android:gravity="center|start"
+        android:paddingStart="10sp"
+        android:paddingEnd="5sp"
+        android:text="Foto de Perfil:"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/txtGender" />
+
+    <ImageView
+        android:id="@+id/imageViewDetails"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        android:scaleType="centerCrop"
+        android:src="@android:drawable/ic_menu_myplaces"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtGender"
+        app:layout_constraintVertical_bias="0.1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,9 +2,16 @@ package com.eduardo.cadastro.view;
 
 import static com.eduardo.cadastro.utils.DateUtils.formatDateFromTimestamp;
 import static com.eduardo.cadastro.utils.DateUtils.getTimestampFromDateString;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,11 +20,14 @@ import com.eduardo.cadastro.R;
 import com.eduardo.cadastro.model.ClienteEntity;
 import com.eduardo.cadastro.model.database.local.Dao;
 import com.eduardo.cadastro.viewmodel.CadastroViewModel;
+import com.squareup.picasso.Picasso;
 import com.vicmikhailau.maskededittext.MaskedFormatter;
 import com.vicmikhailau.maskededittext.MaskedWatcher;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+import java.io.File;
 
 public class CadastroActivity extends AppCompatActivity {
 
@@ -26,6 +36,9 @@ public class CadastroActivity extends AppCompatActivity {
         private Button botaoAdicionarCliente;
         private RadioGroup radioGroup, radioGroupGender;
         private RadioButton radioCPF, radioCNPJ, radioMasculino, radioFeminino;
+        private ImageView imageViewPhoto;
+        private static final int PICK_PHOTO_REQUEST = 1;
+        private Uri selectedImageUri;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +78,54 @@ public class CadastroActivity extends AppCompatActivity {
                 }
             });
 
+            imageViewPhoto = findViewById(R.id.imageViewProfile);
+            imageViewPhoto.setOnClickListener(view -> {
+                openGallery();
+            });
         }
 
-        public void initializeComponents() {
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, PICK_PHOTO_REQUEST);
+        }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_PHOTO_REQUEST && resultCode == RESULT_OK && data != null) {
+            selectedImageUri = data.getData();
+            Uri selectedImageUri = data.getData();
+            String imagePath = getRealPathFromUri(selectedImageUri);
+
+            if (imagePath != null) {
+                Bitmap selectedBitmap = BitmapFactory.decodeFile(imagePath);
+                imageViewPhoto.setImageBitmap(selectedBitmap);
+            } else {
+                Toast.makeText(this, "Falha ao obter caminho do arquivo da imagem", Toast.LENGTH_SHORT).show();
+            }
+            Picasso.get().load(new File(imagePath)).into(imageViewPhoto);
+        }
+    }
+
+    private String getRealPathFromUri(Uri contentUri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(contentUri, projection, null, null, null);
+
+        if (cursor == null) {
+            return contentUri.getPath();
+        }
+
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String filePath = cursor.getString(column_index);
+        cursor.close();
+
+        return filePath;
+    }
+
+
+    public void initializeComponents() {
             editTextName = findViewById(R.id.editTextName);
             editTextUserName = findViewById(R.id.editTextUserName);
             editTextPassword = findViewById(R.id.editTextPassword);
@@ -100,6 +158,7 @@ public class CadastroActivity extends AppCompatActivity {
             radioGroupGender = findViewById(R.id.radioGroupGender);
             radioMasculino = findViewById(R.id.radioMasculine);
             radioFeminino = findViewById(R.id.radioFeminine);
+            imageViewPhoto = findViewById(R.id.imageViewProfile);
         }
 
     public void cadastroCliente(View view) {
@@ -121,14 +180,17 @@ public class CadastroActivity extends AppCompatActivity {
         setCliente.setCpfOrCnpj(cpfUnmasked);
         setCliente.setGender(genderSelect);
 
-        // Chame o método da ViewModel para cadastrar o cliente
+        String imagePath = getRealPathFromUri(selectedImageUri);
+        setCliente.setPicture(imagePath);
+
+        // Chama o método da ViewModel para cadastrar o cliente
         cadastroViewModel.cadastrarCliente(dao, setCliente);
 
         String formattedDate = formatDateFromTimestamp(setCliente.getDate());
             Log.i("Resultado: ",  " Nome: " + setCliente.getName() + " UserName: "
                     + setCliente.getUserName() + " Senha: " + setCliente.getPassword() + " Endereço: " + setCliente.getAdress()
                     + " Email: " + setCliente.getEmail() + " Data de Nascimento: " + formattedDate + " Documento: " + setCliente.getCpfOrCnpj()
-                    + " Genero: " + setCliente.getGender());
+                    + " Genero: " + setCliente.getGender() + " Image: " + setCliente.getPicture());
     }
 
     private void showToast(String message) {
