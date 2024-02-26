@@ -69,6 +69,13 @@ public class EditClientActivity extends AppCompatActivity {
             editTextDate.setText(formattedDate);
             editTextCpfOrCnpj.setText(detalhes.getCpfOrCnpj());
 
+//            String cpfOrCnpj = detalhes.getCpfOrCnpj();
+//            if (MaskUtils.isCpf(cpfOrCnpj)) {
+//                editTextCpfOrCnpj.setText(MaskUtils.formatCpf(cpfOrCnpj));
+//            } else {
+//                editTextCpfOrCnpj.setText(MaskUtils.formatCnpj(cpfOrCnpj));
+//            }
+
         }else{
             Toast.makeText(EditClientActivity.this,
                     "Vazio",Toast.LENGTH_LONG).show();

@@ -28,30 +28,26 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.eduardo.cadastro.view.CadastroActivity"
-            android:exported="false"
-            android:label="@string/title_activity_cadastro"
-            android:parentActivityName=".view.MainActivity"
-            android:theme="@style/Theme.Cadastro.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name="com.eduardo.cadastro.view.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label="@string/title_activity_cadastro"
             android:theme="@style/Theme.Cadastro.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity
+            android:name="com.eduardo.cadastro.view.CadastroActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:parentActivityName=".view.MainActivity"
+           />
+
 
         <activity
             android:name="com.eduardo.cadastro.view.EditClientActivity"

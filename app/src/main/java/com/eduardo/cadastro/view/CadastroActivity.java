@@ -44,6 +44,9 @@ public class CadastroActivity extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_cadastro);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
             initializeComponents();
 
             cadastroViewModel = new ViewModelProvider(this).get(CadastroViewModel.class);
@@ -209,6 +212,7 @@ public class CadastroActivity extends AppCompatActivity {
             editTextEmail.setText("");
             editTextDate.setText("");
             editTextCpfOrCnpj.setText("");
+            imageViewPhoto.setImageBitmap(null);
         }
 
     // Método para definir a máscara do CPF

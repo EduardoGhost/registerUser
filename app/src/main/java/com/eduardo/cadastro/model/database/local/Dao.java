@@ -112,8 +112,8 @@ public class Dao implements Interface {
         values.put("email", mCliente.getEmail());
         values.put("date", mCliente.getDate());
         values.put("cpfOrCnpj", mCliente.getCpfOrCnpj());
-        values.put("gender", mCliente.getGender());
-        values.put("picture", mCliente.getPicture());
+    //    values.put("gender", mCliente.getGender());
+      //  values.put("picture", mCliente.getPicture());
 
             try {
             String[] id = {String.valueOf(mCliente.getCodeId())};
