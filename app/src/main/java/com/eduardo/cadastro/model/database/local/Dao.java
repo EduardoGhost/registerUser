@@ -1,5 +1,9 @@
 package com.eduardo.cadastro.model.database.local;
 
+import static com.eduardo.cadastro.model.database.local.ValidationUtil.isValidEmail;
+import static com.eduardo.cadastro.model.database.local.ValidationUtil.isValidNome;
+import static com.eduardo.cadastro.model.database.local.ValidationUtil.isValidPassword;
+import static com.eduardo.cadastro.model.database.local.ValidationUtil.isValidUsername;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,7 +15,6 @@ import com.eduardo.cadastro.model.ClienteEntity;
 import com.eduardo.cadastro.model.Interface;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class Dao implements Interface {
     //escrever e ler os dados
@@ -31,29 +34,21 @@ public class Dao implements Interface {
     public boolean cadastroCliente(ClienteEntity mCliente) {
         String senha = mCliente.getPassword();
 
-        //validador de email
-        if (isValidEmail(mCliente.getEmail())) {
+        if (isValidEmail(mCliente.getEmail())){
 
-        //verifica se o nome tem mais de 15 caracteres
-        if (mCliente.getName().length() <= 15) {
+        if (isValidNome(mCliente.getName())) {
             showToast("Nome deve ter mais de 15 caracteres.");
             return false;
         }
 
-        //vertifica se userName já existe
-        if (checkIfUsernameExists(mCliente.getUserName())) {
+        if (isValidUsername(mCliente.getUserName(), sqlRead)) {
             showToast("Username já está em uso. Escolha outro.");
             return false;
         }
 
-        //verifica se é maior do que 18 anos
-        int idade = mCliente.calculateAge();
-        if (idade < 18) {
-            showToast("É necessário ter mais de 18 anos para se cadastrar.");
-            return false;
-            }
+        if (ValidationUtil.isClienteMaiorIdade(mCliente)) {
 
-        if (isPasswordValid(senha)) {
+        if (isValidPassword(senha)) {
             ContentValues values = new ContentValues();
             values.put("clienteNome", mCliente.getName());
             values.put("clienteUserName", mCliente.getUserName());
@@ -73,10 +68,17 @@ public class Dao implements Interface {
                 e.printStackTrace();
                 return false;
             }
+
         } else {
             showToast("Senha inválida. Deve ter pelo menos 8 caracteres, um número e uma letra maiúscula.");
             return false;
         }
+
+        } else {
+            showToast("É necessário ter mais de 18 anos para se cadastrar.");
+            return false;
+        }
+
         } else {
             showToast("Email inválido. Insira um email válido.");
             return false;
@@ -87,31 +89,24 @@ public class Dao implements Interface {
     public boolean alterarCliente(ClienteEntity mCliente) {
         String senha = mCliente.getPassword();
 
-        //validador de email
         if (isValidEmail(mCliente.getEmail())) {
 
-        //verifica se o nome tem mais de 15 caracteres
-        if (mCliente.getName().length() <= 15) {
+        if (isValidNome(mCliente.getName())) {
             showToast("Nome deve ter mais de 15 caracteres.");
             return false;
         }
-            //verifica se é maior do que 18 anos
-            int idade = mCliente.calculateAge();
-            if (idade < 18) {
-                showToast("É necessário ter mais de 18 anos para se cadastrar.");
-                return false;
-            }
 
-        if (isPasswordValid(senha)) {
+        if (ValidationUtil.isClienteMaiorIdade(mCliente)) {
 
-        ContentValues values = new ContentValues();
-        values.put("clienteNome", mCliente.getName());
-        values.put("clienteUserName", mCliente.getUserName());
-        values.put("password", mCliente.getPassword());
-        values.put("adress", mCliente.getAdress());
-        values.put("email", mCliente.getEmail());
-        values.put("date", mCliente.getDate());
-        values.put("cpfOrCnpj", mCliente.getCpfOrCnpj());
+        if (isValidPassword(senha)) {
+            ContentValues values = new ContentValues();
+            values.put("clienteNome", mCliente.getName());
+            values.put("clienteUserName", mCliente.getUserName());
+            values.put("password", mCliente.getPassword());
+            values.put("adress", mCliente.getAdress());
+            values.put("email", mCliente.getEmail());
+            values.put("date", mCliente.getDate());
+            values.put("cpfOrCnpj", mCliente.getCpfOrCnpj());
     //    values.put("gender", mCliente.getGender());
       //  values.put("picture", mCliente.getPicture());
 
@@ -125,11 +120,20 @@ public class Dao implements Interface {
             Log.i("Informação: ","Erro ao atualizar dados: "+e.getMessage());
             return false;
         }
+            finally {
+                sqlWrite.close();
+        }
         }
          else {
                 showToast("Senha inválida. Deve ter pelo menos 8 caracteres, um número e uma letra maiúscula.");
                 return false;
-    }
+        }
+
+        } else {
+            showToast("É necessário ter mais de 18 anos para se cadastrar.");
+            return false;
+            }
+
     } else {
         showToast("Email inválido. Insira um email válido.");
         return false;
@@ -208,27 +212,6 @@ public class Dao implements Interface {
             cursor.close();
         }
         return cliente;
-    }
-
-    //metodo para checkar o userName existente
-    private boolean checkIfUsernameExists(String username) {
-        String sqlSelect = "select * from " + SQLite.TABELA_CLIENTE + " where clienteUserName = ?";
-        Cursor cursor = sqlRead.rawQuery(sqlSelect, new String[]{username});
-        boolean usernameExists = cursor.getCount() > 0;
-        cursor.close();
-        return usernameExists;
-    }
-
-    //metodo para validar senha
-    public boolean isPasswordValid(String password) {
-        return password.length() >= 8 && password.matches(".*\\d.*") && password.matches(".*[A-Z].*");
-    }
-
-    //metodo para validar email
-    private boolean isValidEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        return pattern.matcher(email).matches();
     }
 
     private void showToast(String message) {
