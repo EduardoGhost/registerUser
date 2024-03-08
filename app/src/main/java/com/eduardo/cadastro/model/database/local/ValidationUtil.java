@@ -14,9 +14,9 @@ public class ValidationUtil {
         return pattern.matcher(email).matches();
     }
 
-    // Verifica se o nome tem mais de 15 caracteres
+    // Validador nome
     public static boolean isValidNome(String nome) {
-        return nome != null && nome.length() <= 15;
+        return nome != null && nome.length() <= 15 && nome.matches("[a-zA-Z]+");
     }
 
     // Vertifica se userName já existe
