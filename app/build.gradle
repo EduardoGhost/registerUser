@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -52,6 +53,11 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.28.2'
     androidTestImplementation 'org.mockito:mockito-android:2.28.2'
     testImplementation 'org.mockito:mockito-inline:2.28.2'
+
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
+    implementation "com.google.firebase:firebase-database"
+    implementation('com.google.firebase:firebase-analytics')
 
 
 }

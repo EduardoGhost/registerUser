@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
 
     <application
@@ -18,15 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cadastro"
         tools:targetApi="31">
-        <activity
-            android:name="com.eduardo.cadastro.view.listClientActivity"
-            android:exported="false"
-            android:label="@string/clients_list"
-            android:parentActivityName=".view.MainActivity">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+
         <activity
             android:name="com.eduardo.cadastro.view.MainActivity"
             android:exported="true"
@@ -42,13 +35,21 @@
                 android:value="" />
         </activity>
         <activity
+            android:name="com.eduardo.cadastro.view.listClientActivity"
+            android:exported="false"
+            android:label="@string/clients_list"
+            android:parentActivityName=".view.MainActivity">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+        <activity
             android:name="com.eduardo.cadastro.view.CadastroActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:parentActivityName=".view.MainActivity"
            />
-
-
         <activity
             android:name="com.eduardo.cadastro.view.EditClientActivity"
             android:label="@string/editClient"

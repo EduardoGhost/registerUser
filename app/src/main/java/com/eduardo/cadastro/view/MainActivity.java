@@ -12,12 +12,16 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.eduardo.cadastro.databinding.ActivityMainBinding;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-
+    private FirebaseDatabase database;
+    private DatabaseReference myReference;
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private static final int REQUEST_READ_EXTERNAL_STORAGE = 1;
@@ -25,11 +29,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
+
+        database = FirebaseDatabase.getInstance();
+        myReference = database.getReference("cadastroTeste");
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
+        if (myReference != null) {
+            myReference.child("usuario").setValue("eduardo");}
 
 
         // Verifique se a permissão está concedida
